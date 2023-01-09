@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  operator:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-01-10T00:27:39.23330022+02:00"
+    description: Operator helm chart
+    digest: 3f7012c0538b66fbd4d61509c7763edd42d358137b5db69407ed1a1e4e86a8b9
+    name: operator
+    type: application
+    urls:
+    - https://github.com/instaclustr/operator-helm/operator-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-01-10T00:27:39.231254556+02:00"
