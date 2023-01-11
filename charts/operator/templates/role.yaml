@@ -1,0 +1,10 @@
+{{- if .Values.rbac }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: {{ .Values.rbac.type }}
+metadata:
+  name: {{ include "operator.fullname" . }}
+  labels:
+    {{- include "operator.labels" . | nindent 4 }}
+rules:
+{{ toYaml .Values.rbac.rules | indent 2 }}
+{{- end }}
