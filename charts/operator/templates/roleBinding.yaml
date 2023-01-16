@@ -1,0 +1,16 @@
+{{- if .Values.rbac }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: {{ .Values.rbac.type }}Binding
+metadata:
+  name: {{ include "operator.fullname" . }}
+  labels:
+    {{- include "operator.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "operator.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: {{ .Values.rbac.type }}
+  name: {{ include "operator.fullname" . }}
+{{- end }}

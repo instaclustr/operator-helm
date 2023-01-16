@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "operator.fullname" . }}
+  labels:
+    {{- include "operator.labels" . | nindent 4 }}
+  {{- if .Values.deployment.annotations }}
+  annotations:
+    {{ toYaml .Values.deployment.annotations | indent 4 }}
+  {{- end}}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "operator.selectorLabels" . | nindent 6 }}
+  {{- if .Values.deployment.strategy }}
+  strategy:
+    {{ toYaml .Values.deployment.strategy | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      {{- if .Values.deployment.metadataAnnotations }}
+      annotations:
+        {{ toYaml .Values.deployment.metadataAnnotations | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "operator.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "operator.fullname" . }}
+      {{- if .Values.initContainers }}
+      initContainers:
+      {{- range .Values.initContainers}}
+        - name: {{ .name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .command }}
+          command:
+          {{- range .command }}
+            - {{ . }}
+          {{- end }}
+          {{- end }}
+          {{- if .args }}
+          args:
+          {{- range .args }}
+          - {{ . }}
+          {{- end }}
+          {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ include "operator.fullname" . }}-secrets
+          ports:
+              - name: http
+                containerPort: 8443
+                protocol: TCP
+          {{- if .Values.resources }}
+          resources:
+            {- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: {{ .Release.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .command }}
+          command:
+          {{- range .command }}
+          - {{ . }}
+          {{- end }}
+          {{- end }}
+          {{- if .args }}
+          args:
+          {{- range .args }}
+          - {{ . }}
+          {{- end }}
+          {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ include "operator.fullname" . }}-secrets
+          ports:
+            - name: http
+              containerPort: {{ .Values.port }}
+              protocol: TCP
+          {{- range .Values.extraPorts }}
+          - name: {{ .name }}
+            protocol: TCP
+            containerPort: {{ .port }}
+          {{- end }}
+          {{- if .Values.livenessProbe.enabled }}
+          livenessProbe:
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            httpGet:
+              path:  {{ .Values.livenessProbe.path }}
+              port: {{ .Values.livenessProbe.port }}
+              scheme:  {{ .Values.livenessProbe.scheme }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
+          readinessProbe:
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ .Values.readinessProbe.port }}
+              scheme: {{ .Values.readinessProbe.scheme }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if .Values.resources }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
