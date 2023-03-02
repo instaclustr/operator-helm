@@ -4,7 +4,7 @@ replicaCount: 1
 image:
   repository: doodgematvey/dm5
   pullPolicy: IfNotPresent
-  tag: test31
+  tag: test77
 
 port: 8080
 
