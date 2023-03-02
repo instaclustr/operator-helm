@@ -39,6 +39,8 @@ spec:
                 type: boolean
               autoCreateTopics:
                 type: boolean
+              bundledUseOnly:
+                type: boolean
               clientAuthBrokerWithEncryption:
                 type: boolean
               clientAuthBrokerWithoutEncryption:
@@ -72,8 +74,16 @@ spec:
                     nodeSize:
                       type: string
                     nodesNumber:
-                      format: int32
                       type: integer
+                    privateLink:
+                      items:
+                        properties:
+                          advertisedHostname:
+                            type: string
+                        required:
+                        - advertisedHostname
+                        type: object
+                      type: array
                     region:
                       type: string
                     tags:
@@ -130,28 +140,23 @@ spec:
                   type: object
                 type: array
               name:
-                description: 'Name [ 3 .. 32 ] characters. APIv2 : "name", APIv1 :
-                  "clusterName".'
+                description: Name [ 3 .. 32 ] characters.
                 type: string
               partitionsNumber:
                 description: PartitionsNumber number of partitions to use when created
                   new topics.
-                format: int32
                 type: integer
               pciCompliance:
-                description: "The PCI compliance standards relate to the security
-                  of user data and transactional information. Can only be applied
-                  clusters provisioned on AWS_VPC, running Cassandra, Kafka, Elasticsearch
+                description: The PCI compliance standards relate to the security of
+                  user data and transactional information. Can only be applied clusters
+                  provisioned on AWS_VPC, running Cassandra, Kafka, Elasticsearch
                   and Redis. PCI compliance cannot be enabled if the cluster has Spark.
-                  \n APIv1 : \"pciCompliantCluster,omitempty\"; APIv2 : pciComplianceMode."
                 type: boolean
               privateNetworkCluster:
-                description: Required for APIv2, but for APIv1 set "false" as a default.
                 type: boolean
               replicationFactorNumber:
                 description: ReplicationFactorNumber to use for new topic. Also represents
                   the number of racks to use when allocating nodes.
-                format: int32
                 type: integer
               restProxy:
                 items:
@@ -186,21 +191,16 @@ spec:
                 description: 'Non-production clusters may receive lower priority support
                   and reduced SLAs. Production tier is not available when using Developer
                   class nodes. See SLA Tier for more information. Enum: "PRODUCTION"
-                  "NON_PRODUCTION". Required for APIv2, but for APIv1 set "NON_PRODUCTION"
-                  as a default.'
+                  "NON_PRODUCTION".'
                 type: string
               twoFactorDelete:
-                description: APIv2, unlike AP1, receives an array of TwoFactorDelete
-                  (<= 1 items);
                 items:
                   properties:
                     email:
-                      description: 'Email address which will be contacted when the
-                        cluster is requested to be deleted. APIv1: deleteVerifyEmail;
-                        APIv2: confirmationEmail.'
+                      description: Email address which will be contacted when the
+                        cluster is requested to be deleted.
                       type: string
                     phone:
-                      description: 'APIv1: deleteVerifyPhone; APIv2: confirmationPhoneNumber.'
                       type: string
                   required:
                   - email
@@ -231,7 +231,6 @@ spec:
                     id:
                       type: string
                     nodeNumber:
-                      format: int32
                       type: integer
                     nodes:
                       items:
@@ -260,6 +259,25 @@ spec:
                 type: array
               id:
                 type: string
+              maintenanceEvents:
+                items:
+                  properties:
+                    description:
+                      type: string
+                    id:
+                      type: string
+                    isFinalized:
+                      type: boolean
+                    scheduledEndTime:
+                      type: string
+                    scheduledStartTime:
+                      type: string
+                    scheduledStartTimeMax:
+                      type: string
+                    scheduledStartTimeMin:
+                      type: string
+                  type: object
+                type: array
               options:
                 properties:
                   dataNodeSize:
@@ -269,7 +287,7 @@ spec:
                   openSearchDashboardsNodeSize:
                     type: string
                 type: object
-              status:
+              state:
                 type: string
               twoFactorDeleteEnabled:
                 type: boolean
