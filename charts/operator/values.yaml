@@ -33,9 +33,12 @@ rbac:
       resources:
         - secrets
       verbs:
+        - create
+        - delete
         - get
         - list
         - patch
+        - update
         - watch
     - apiGroups:
         - clusterresources.instaclustr.com
@@ -569,38 +572,6 @@ rbac:
         - get
         - patch
         - update
-    # leader-election-role
-    - apiGroups:
-        - ""
-      resources:
-        - configmaps
-      verbs:
-        - get
-        - list
-        - watch
-        - create
-        - update
-        - patch
-        - delete
-    - apiGroups:
-        - coordination.k8s.io
-      resources:
-        - leases
-      verbs:
-        - get
-        - list
-        - watch
-        - create
-        - update
-        - patch
-        - delete
-    - apiGroups:
-        - ""
-      resources:
-        - events
-      verbs:
-        - create
-        - patch
 
 initContainers: {}
 
