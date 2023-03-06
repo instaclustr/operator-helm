@@ -25,6 +25,21 @@ deployment:
 service:
   type: ClusterIP
 
+kubeRBACProxy:
+  enabled: true
+  image:
+    repository: gcr.io/kubebuilder/kube-rbac-proxy
+    tag: v0.13.0
+  ports:
+    proxyPort: 8443
+  resources:
+    limits:
+      cpu: 500m
+      memory: 128Mi
+    requests:
+      cpu: 5m
+      memory: 64Mi
+
 rbac:
   type: ClusterRole
   rules:
