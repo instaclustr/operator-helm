@@ -12,12 +12,33 @@ spec:
     - port: {{ .Values.port }}
       targetPort: https
       protocol: TCP
-      name: https
+      name: metrics
+    {{- if .Values.kubeRBACProxy.enabled }}
+    - name: https
+      port: {{ .Values.kubeRBACProxy.ports.proxyPort }}
+      protocol: TCP
+      targetPort: https
+    {{- end }}
     {{- range .Values.extraPorts }}
       - port: {{ .port }}
         targetPort: {{ .port }}
         protocol: TCP
         name: {{ .name }}
     {{- end }}
+  selector:
+    {{- include "operator.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "operator.labels" . | nindent 4 }}
+  name: {{ template "operator.fullname" . }}-webhook
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - port: 443
+      protocol: TCP
+      targetPort: 9443
   selector:
     {{- include "operator.selectorLabels" . | nindent 4 }}

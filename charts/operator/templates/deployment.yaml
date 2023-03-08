@@ -7,7 +7,7 @@ metadata:
   {{- if .Values.deployment.annotations }}
   annotations:
     {{ toYaml .Values.deployment.annotations | indent 4 }}
-  {{- end}}
+  {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -55,9 +55,9 @@ spec:
             - secretRef:
                 name: {{ include "operator.fullname" . }}-secrets
           ports:
-              - name: http
-                containerPort: 8443
-                protocol: TCP
+            - name: http
+              containerPort: 8443
+              protocol: TCP
           {{- if .Values.resources }}
           resources:
             {- toYaml .Values.resources | nindent 12 }}
@@ -84,8 +84,8 @@ spec:
             - secretRef:
                 name: {{ include "operator.fullname" . }}-secrets
           ports:
-            - name: http
-              containerPort: {{ .Values.port }}
+            - name: webhook-server
+              containerPort: 9443
               protocol: TCP
           {{- range .Values.extraPorts }}
           - name: {{ .name }}
@@ -120,6 +120,29 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- end }}
+          volumeMounts:
+            - mountPath: /tmp/k8s-webhook-server/serving-certs
+              name: cert
+              readOnly: true
+        {{ if .Values.kubeRBACProxy.enabled }}
+        - args:
+            - --secure-listen-address=0.0.0.0:{{ .Values.kubeRBACProxy.ports.proxyPort }}
+            - --upstream=http://127.0.0.1:8080/
+            - --logtostderr=true
+            - --v=0
+            {{- if .Values.kubeRBACProxy.extraArgs }}
+            {{- .Values.kubeRBACProxy.extraArgs | toYaml | nindent 12 }}
+            {{- end }}
+          image: "{{ .Values.kubeRBACProxy.image.repository }}:{{ .Values.kubeRBACProxy.image.tag }}"
+          name: kube-rbac-proxy
+          ports:
+            - containerPort: {{ .Values.kubeRBACProxy.ports.proxyPort }}
+              name: https
+              protocol: TCP
+          {{- with .Values.kubeRBACProxy.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+          {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -128,6 +151,11 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: webhook-server-cert
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
