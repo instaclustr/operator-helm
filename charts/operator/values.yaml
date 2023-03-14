@@ -4,7 +4,7 @@ replicaCount: 1
 image:
   repository: doodgematvey/dm5
   pullPolicy: IfNotPresent
-  tag: test77
+  tag: test82
 
 port: 8080
 
@@ -43,6 +43,12 @@ kubeRBACProxy:
 rbac:
   type: ClusterRole
   rules:
+    - apiGroups:
+        - ""
+      resources:
+        - events
+      verbs:
+        - create
     - apiGroups:
         - ""
       resources:
