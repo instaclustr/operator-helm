@@ -16,6 +16,26 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
+        path: /mutate-clusters-instaclustr-com-v1alpha1-cadence
+    failurePolicy: Fail
+    name: mcadence.kb.io
+    rules:
+      - apiGroups:
+          - clusters.instaclustr.com
+        apiVersions:
+          - v1alpha1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - cadences
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ template "operator.fullname" . }}-webhook
+        namespace: {{ .Release.Namespace }}
         path: /mutate-clusters-instaclustr-com-v1alpha1-cassandra
     failurePolicy: Fail
     name: vcassandra.kb.io
@@ -141,6 +161,26 @@ metadata:
   creationTimestamp: null
   name: {{ template "operator.fullname" . }}-validation
 webhooks:
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ template "operator.fullname" . }}-webhook
+        namespace: {{ .Release.Namespace }}
+        path: /validate-clusterresources-instaclustr-com-v1alpha1-awsencryptionkey
+    failurePolicy: Fail
+    name: vawsencryptionkey.kb.io
+    rules:
+      - apiGroups:
+          - clusterresources.instaclustr.com
+        apiVersions:
+          - v1alpha1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - awsencryptionkeys
+    sideEffects: None
   - admissionReviewVersions:
       - v1
     clientConfig:
@@ -280,6 +320,26 @@ webhooks:
           - UPDATE
         resources:
           - nodereloads
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ template "operator.fullname" . }}-webhook
+        namespace: {{ .Release.Namespace }}
+        path: /validate-clusters-instaclustr-com-v1alpha1-cadence
+    failurePolicy: Fail
+    name: vcadence.kb.io
+    rules:
+      - apiGroups:
+          - clusters.instaclustr.com
+        apiVersions:
+          - v1alpha1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - cadences
     sideEffects: None
   - admissionReviewVersions:
       - v1
