@@ -5,20 +5,20 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.9.2
   creationTimestamp: null
-  name: redisusers.clusterresources.instaclustr.com
+  name: opensearchusers.clusterresources.instaclustr.com
 spec:
   group: clusterresources.instaclustr.com
   names:
-    kind: RedisUser
-    listKind: RedisUserList
-    plural: redisusers
-    singular: redisuser
+    kind: OpenSearchUser
+    listKind: OpenSearchUserList
+    plural: opensearchusers
+    singular: opensearchuser
   scope: Namespaced
   versions:
   - name: v1beta1
     schema:
       openAPIV3Schema:
-        description: RedisUser is the Schema for the redisusers API
+        description: OpenSearchUser is the Schema for the opensearchusers API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -33,30 +33,31 @@ spec:
           metadata:
             type: object
           spec:
-            description: RedisUserSpec defines the desired state of RedisUser
+            description: OpenSearchUserSpec defines the desired state of OpenSearchUser
+            properties:
+              secretRef:
+                properties:
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - secretRef
+            type: object
+          status:
+            description: OpenSearchUserStatus defines the observed state of OpenSearchUser
             properties:
               clusterId:
                 type: string
-              initialPermissions:
-                type: string
-              passwordSecretName:
-                type: string
-              passwordSecretNamespace:
-                type: string
-              username:
+              state:
                 type: string
             required:
             - clusterId
-            - initialPermissions
-            - passwordSecretName
-            - passwordSecretNamespace
-            - username
-            type: object
-          status:
-            description: RedisUserStatus defines the observed state of RedisUser
-            properties:
-              ID:
-                type: string
+            - state
             type: object
         type: object
     served: true

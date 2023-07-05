@@ -2,9 +2,9 @@ fullnameOverride: "operator-controller-manager"
 replicaCount: 1
 
 image:
-  repository: doodgematvey/dm5
+  repository: icoperator/instaclustr-operator
   pullPolicy: IfNotPresent
-  tag: v0.0.5
+  tag: v0.0.6
 
 port: 8080
 
@@ -193,6 +193,32 @@ rbac:
     - apiGroups:
         - clusterresources.instaclustr.com
       resources:
+        - cassandrausers
+      verbs:
+        - create
+        - delete
+        - get
+        - list
+        - patch
+        - update
+        - watch
+    - apiGroups:
+        - clusterresources.instaclustr.com
+      resources:
+        - cassandrausers/finalizers
+      verbs:
+        - update
+    - apiGroups:
+        - clusterresources.instaclustr.com
+      resources:
+        - cassandrausers/status
+      verbs:
+        - get
+        - patch
+        - update
+    - apiGroups:
+        - clusterresources.instaclustr.com
+      resources:
         - clusterbackups
       verbs:
         - create
@@ -317,6 +343,33 @@ rbac:
         - clusterresources.instaclustr.com
       resources:
         - nodereloads/status
+      verbs:
+        - get
+        - patch
+        - update
+    - apiGroups:
+        - clusterresources.instaclustr.com
+      resources:
+        - opensearchusers
+      verbs:
+        - create
+        - delete
+        - get
+        - list
+        - patch
+        - update
+        - watch
+    - apiGroups:
+        - clusterresources.instaclustr.com
+      resources:
+        - opensearchusers/finalizers
+      verbs:
+        - patch
+        - update
+    - apiGroups:
+        - clusterresources.instaclustr.com
+      resources:
+        - opensearchusers/status
       verbs:
         - get
         - patch
@@ -670,6 +723,38 @@ rbac:
         - get
         - patch
         - update
+    # leader-election-role
+    - apiGroups:
+        - ""
+      resources:
+        - configmaps
+      verbs:
+        - get
+        - list
+        - watch
+        - create
+        - update
+        - patch
+        - delete
+    - apiGroups:
+        - coordination.k8s.io
+      resources:
+        - leases
+      verbs:
+        - get
+        - list
+        - watch
+        - create
+        - update
+        - patch
+        - delete
+    - apiGroups:
+        - ""
+      resources:
+        - events
+      verbs:
+        - create
+        - patch
 
 initContainers: {}
 
