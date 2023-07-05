@@ -16,14 +16,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /mutate-clusters-instaclustr-com-v1alpha1-cadence
+        path: /mutate-clusters-instaclustr-com-v1beta1-cadence
     failurePolicy: Fail
     name: mcadence.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -36,14 +36,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /mutate-clusters-instaclustr-com-v1alpha1-cassandra
+        path: /mutate-clusters-instaclustr-com-v1beta1-cassandra
     failurePolicy: Fail
     name: vcassandra.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -56,14 +56,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /mutate-clusters-instaclustr-com-v1alpha1-kafka
+        path: /mutate-clusters-instaclustr-com-v1beta1-kafka
     failurePolicy: Fail
     name: mkafka.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -76,14 +76,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /mutate-clusters-instaclustr-com-v1alpha1-kafkaconnect
+        path: /mutate-clusters-instaclustr-com-v1beta1-kafkaconnect
     failurePolicy: Fail
     name: mkafkaconnect.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -96,14 +96,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /mutate-clusters-instaclustr-com-v1alpha1-opensearch
+        path: /mutate-clusters-instaclustr-com-v1beta1-opensearch
     failurePolicy: Fail
     name: mopensearch.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -116,14 +116,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /mutate-clusters-instaclustr-com-v1alpha1-postgresql
+        path: /mutate-clusters-instaclustr-com-v1beta1-postgresql
     failurePolicy: Fail
     name: mpostgresql.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -136,14 +136,34 @@ webhooks:
       service:
         name: webhook-service
         namespace: system
-        path: /mutate-clusters-instaclustr-com-v1alpha1-zookeeper
+        path: /mutate-clusters-instaclustr-com-v1beta1-redis
+    failurePolicy: Fail
+    name: mredis.kb.io
+    rules:
+      - apiGroups:
+          - clusters.instaclustr.com
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - redis
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: webhook-service
+        namespace: system
+        path: /mutate-clusters-instaclustr-com-v1beta1-zookeeper
     failurePolicy: Fail
     name: mzookeeper.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -167,14 +187,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusterresources-instaclustr-com-v1alpha1-awsencryptionkey
+        path: /validate-clusterresources-instaclustr-com-v1beta1-awsencryptionkey
     failurePolicy: Fail
     name: vawsencryptionkey.kb.io
     rules:
       - apiGroups:
           - clusterresources.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -187,14 +207,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusterresources-instaclustr-com-v1alpha1-awssecuritygroupfirewallrule
+        path: /validate-clusterresources-instaclustr-com-v1beta1-awssecuritygroupfirewallrule
     failurePolicy: Fail
     name: vawssecuritygroupfirewallrule.kb.io
     rules:
       - apiGroups:
           - clusterresources.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -207,14 +227,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusterresources-instaclustr-com-v1alpha1-awsvpcpeering
+        path: /validate-clusterresources-instaclustr-com-v1beta1-awsvpcpeering
     failurePolicy: Fail
     name: vawsvpcpeering.kb.io
     rules:
       - apiGroups:
           - clusterresources.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -227,14 +247,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusterresources-instaclustr-com-v1alpha1-azurevnetpeering
+        path: /validate-clusterresources-instaclustr-com-v1beta1-azurevnetpeering
     failurePolicy: Fail
     name: vazurevnetpeering.kb.io
     rules:
       - apiGroups:
           - clusterresources.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -247,14 +267,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusterresources-instaclustr-com-v1alpha1-clusternetworkfirewallrule
+        path: /validate-clusterresources-instaclustr-com-v1beta1-clusternetworkfirewallrule
     failurePolicy: Fail
     name: vclusternetworkfirewallrule.kb.io
     rules:
       - apiGroups:
           - clusterresources.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -267,14 +287,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusterresources-instaclustr-com-v1alpha1-gcpvpcpeering
+        path: /validate-clusterresources-instaclustr-com-v1beta1-gcpvpcpeering
     failurePolicy: Fail
     name: vgcpvpcpeering.kb.io
     rules:
       - apiGroups:
           - clusterresources.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -287,14 +307,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusterresources-instaclustr-com-v1alpha1-maintenanceevents
+        path: /validate-clusterresources-instaclustr-com-v1beta1-maintenanceevents
     failurePolicy: Fail
     name: vmaintenanceevents.kb.io
     rules:
       - apiGroups:
           - clusterresources.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -307,14 +327,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusterresources-instaclustr-com-v1alpha1-nodereload
+        path: /validate-clusterresources-instaclustr-com-v1beta1-nodereload
     failurePolicy: Fail
     name: vnodereload.kb.io
     rules:
       - apiGroups:
           - clusterresources.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -327,14 +347,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusters-instaclustr-com-v1alpha1-cadence
+        path: /validate-clusters-instaclustr-com-v1beta1-cadence
     failurePolicy: Fail
     name: vcadence.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -347,14 +367,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusters-instaclustr-com-v1alpha1-cassandra
+        path: /validate-clusters-instaclustr-com-v1beta1-cassandra
     failurePolicy: Fail
     name: vcassandra.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -367,14 +387,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusters-instaclustr-com-v1alpha1-kafka
+        path: /validate-clusters-instaclustr-com-v1beta1-kafka
     failurePolicy: Fail
     name: vkafka.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -387,14 +407,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusters-instaclustr-com-v1alpha1-kafkaconnect
+        path: /validate-clusters-instaclustr-com-v1beta1-kafkaconnect
     failurePolicy: Fail
     name: vkafkaconnect.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -407,14 +427,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusters-instaclustr-com-v1alpha1-opensearch
+        path: /validate-clusters-instaclustr-com-v1beta1-opensearch
     failurePolicy: Fail
     name: vopensearch.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -427,14 +447,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusters-instaclustr-com-v1alpha1-postgresql
+        path: /validate-clusters-instaclustr-com-v1beta1-postgresql
     failurePolicy: Fail
     name: vpostgresql.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -447,14 +467,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-clusters-instaclustr-com-v1alpha1-redis
+        path: /validate-clusters-instaclustr-com-v1beta1-redis
     failurePolicy: Fail
     name: vredis.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -467,14 +487,14 @@ webhooks:
       service:
         name: webhook-service
         namespace: system
-        path: /validate-clusters-instaclustr-com-v1alpha1-zookeeper
+        path: /validate-clusters-instaclustr-com-v1beta1-zookeeper
     failurePolicy: Fail
     name: vzookeeper.kb.io
     rules:
       - apiGroups:
           - clusters.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -487,14 +507,14 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
-        path: /validate-kafkamanagement-instaclustr-com-v1alpha1-kafkaacl
+        path: /validate-kafkamanagement-instaclustr-com-v1beta1-kafkaacl
     failurePolicy: Fail
     name: vkafkaacl.kb.io
     rules:
       - apiGroups:
           - kafkamanagement.instaclustr.com
         apiVersions:
-          - v1alpha1
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
