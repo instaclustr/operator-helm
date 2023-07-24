@@ -91,10 +91,6 @@ spec:
                       type: string
                     network:
                       type: string
-                    nodeSize:
-                      type: string
-                    nodesNumber:
-                      type: integer
                     privateLink:
                       type: boolean
                     region:
@@ -110,8 +106,6 @@ spec:
                   required:
                   - cloudProvider
                   - network
-                  - nodeSize
-                  - nodesNumber
                   - region
                   - replicationFactor
                   type: object
@@ -212,16 +206,18 @@ spec:
                   - email
                   type: object
                 type: array
-              userRef:
-                properties:
-                  name:
-                    type: string
-                  namespace:
-                    type: string
-                required:
-                - name
-                - namespace
-                type: object
+              userRefs:
+                items:
+                  properties:
+                    name:
+                      type: string
+                    namespace:
+                      type: string
+                  required:
+                  - name
+                  - namespace
+                  type: object
+                type: array
               version:
                 type: string
             type: object
