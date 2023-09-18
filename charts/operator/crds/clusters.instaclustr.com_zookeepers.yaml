@@ -15,7 +15,20 @@ spec:
     singular: zookeeper
   scope: Namespaced
   versions:
-  - name: v1beta1
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.id
+      name: ID
+      type: string
+    - jsonPath: .status.state
+      name: State
+      type: string
+    - jsonPath: .spec.version
+      name: Version
+      type: string
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: Zookeeper is the Schema for the zookeepers API
@@ -84,6 +97,8 @@ spec:
                   - region
                   type: object
                 type: array
+              description:
+                type: string
               name:
                 description: Name [ 3 .. 32 ] characters.
                 type: string
@@ -156,6 +171,19 @@ spec:
                             type: string
                         type: object
                       type: array
+                    privateLink:
+                      items:
+                        properties:
+                          advertisedHostname:
+                            type: string
+                          endPointServiceId:
+                            type: string
+                          endPointServiceName:
+                            type: string
+                        required:
+                        - advertisedHostname
+                        type: object
+                      type: array
                     status:
                       type: string
                   type: object
@@ -165,20 +193,91 @@ spec:
               maintenanceEvents:
                 items:
                   properties:
-                    description:
-                      type: string
-                    id:
-                      type: string
-                    isFinalized:
-                      type: boolean
-                    scheduledEndTime:
-                      type: string
-                    scheduledStartTime:
-                      type: string
-                    scheduledStartTimeMax:
-                      type: string
-                    scheduledStartTimeMin:
-                      type: string
+                    inProgress:
+                      items:
+                        properties:
+                          description:
+                            type: string
+                          endTime:
+                            type: string
+                          id:
+                            type: string
+                          isFinalized:
+                            type: boolean
+                          outcome:
+                            type: string
+                          scheduledEndTime:
+                            type: string
+                          scheduledStartTime:
+                            type: string
+                          scheduledStartTimeMax:
+                            type: string
+                          scheduledStartTimeMin:
+                            type: string
+                          startTime:
+                            type: string
+                        required:
+                        - isFinalized
+                        type: object
+                      type: array
+                    past:
+                      items:
+                        properties:
+                          description:
+                            type: string
+                          endTime:
+                            type: string
+                          id:
+                            type: string
+                          isFinalized:
+                            type: boolean
+                          outcome:
+                            type: string
+                          scheduledEndTime:
+                            type: string
+                          scheduledStartTime:
+                            type: string
+                          scheduledStartTimeMax:
+                            type: string
+                          scheduledStartTimeMin:
+                            type: string
+                          startTime:
+                            type: string
+                        required:
+                        - isFinalized
+                        type: object
+                      type: array
+                    upcoming:
+                      items:
+                        properties:
+                          description:
+                            type: string
+                          endTime:
+                            type: string
+                          id:
+                            type: string
+                          isFinalized:
+                            type: boolean
+                          outcome:
+                            type: string
+                          scheduledEndTime:
+                            type: string
+                          scheduledStartTime:
+                            type: string
+                          scheduledStartTimeMax:
+                            type: string
+                          scheduledStartTimeMin:
+                            type: string
+                          startTime:
+                            type: string
+                        required:
+                        - isFinalized
+                        type: object
+                      type: array
+                  required:
+                  - inProgress
+                  - past
+                  - upcoming
                   type: object
                 type: array
               options:
