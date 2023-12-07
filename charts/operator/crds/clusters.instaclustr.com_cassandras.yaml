@@ -119,29 +119,45 @@ spec:
                 type: boolean
               privateNetworkCluster:
                 type: boolean
+              resizeSettings:
+                items:
+                  properties:
+                    concurrency:
+                      type: integer
+                    notifySupportContacts:
+                      type: boolean
+                  type: object
+                type: array
               restoreFrom:
                 properties:
-                  cdcInfos:
+                  cdcConfigs:
                     description: An optional list of cluster data centres for which
                       custom VPC settings will be used.
                     items:
                       properties:
                         cdcId:
                           type: string
-                        customVpcId:
+                        customVpcSettings:
+                          properties:
+                            network:
+                              type: string
+                            vpcId:
+                              type: string
+                          required:
+                          - network
+                          - vpcId
+                          type: object
+                        restoreMode:
                           type: string
-                        customVpcNetwork:
-                          type: string
-                        restoreToSameVpc:
-                          type: boolean
+                      required:
+                      - cdcId
+                      - customVpcSettings
+                      - restoreMode
                       type: object
                     type: array
                   clusterID:
                     description: Original cluster ID. Backup from that cluster will
                       be used for restore
-                    type: string
-                  clusterNameOverride:
-                    description: The display name of the restored cluster.
                     type: string
                   clusterNetwork:
                     description: The cluster network for this cluster to be restored
@@ -156,6 +172,9 @@ spec:
                       up data will be restored for this point in time.
                     format: int64
                     type: integer
+                  restoredClusterName:
+                    description: The display name of the restored cluster.
+                    type: string
                 required:
                 - clusterID
                 type: object
@@ -205,6 +224,18 @@ spec:
           status:
             description: CassandraStatus defines the observed state of Cassandra
             properties:
+              availableUsers:
+                items:
+                  properties:
+                    name:
+                      type: string
+                    namespace:
+                      type: string
+                  required:
+                  - name
+                  - namespace
+                  type: object
+                type: array
               cdcid:
                 type: string
               currentClusterOperationStatus:
@@ -250,6 +281,60 @@ spec:
                             type: string
                         required:
                         - advertisedHostname
+                        type: object
+                      type: array
+                    resizeOperations:
+                      items:
+                        properties:
+                          completed:
+                            description: Timestamp of the completion of the operation
+                            type: string
+                          concurrentResizes:
+                            description: Number of nodes that can be concurrently
+                              resized at a given time
+                            type: integer
+                          created:
+                            description: Timestamp of the creation of the operation
+                            type: string
+                          id:
+                            description: ID of the operation
+                            type: string
+                          instaclustrSupportAlerted:
+                            description: Timestamp of when Instaclustr Support has
+                              been alerted to the resize operation.
+                            type: string
+                          newNodeSize:
+                            description: New size of the node
+                            type: string
+                          nodePurpose:
+                            description: Purpose of the node
+                            type: string
+                          replaceOperations:
+                            description: Replace operations
+                            items:
+                              properties:
+                                created:
+                                  description: Timestamp of the creation of the node
+                                    replacement operation
+                                  type: string
+                                id:
+                                  description: ID of the node replacement operation
+                                  type: string
+                                newNodeId:
+                                  description: ID of the new node in the replacement
+                                    operation
+                                  type: string
+                                nodeId:
+                                  description: ID of the node being replaced
+                                  type: string
+                                status:
+                                  description: Status of the node replacement operation
+                                  type: string
+                              type: object
+                            type: array
+                          status:
+                            description: Status of the operation
+                            type: string
                         type: object
                       type: array
                     status:
@@ -342,10 +427,6 @@ spec:
                         - isFinalized
                         type: object
                       type: array
-                  required:
-                  - inProgress
-                  - past
-                  - upcoming
                   type: object
                 type: array
               options:
