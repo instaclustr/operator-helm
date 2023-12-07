@@ -96,6 +96,26 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
+        path: /mutate-clusterresources-instaclustr-com-v1beta1-clusterbackup
+    failurePolicy: Fail
+    name: mclusterbackup.kb.io
+    rules:
+      - apiGroups:
+          - clusterresources.instaclustr.com
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - clusterbackups
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ template "operator.fullname" . }}-webhook
+        namespace: {{ .Release.Namespace }}
         path: /mutate-clusterresources-instaclustr-com-v1beta1-clusternetworkfirewallrule
     failurePolicy: Fail
     name: mclusternetworkfirewallrule.kb.io
@@ -109,6 +129,26 @@ webhooks:
           - UPDATE
         resources:
           - clusternetworkfirewallrules
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ template "operator.fullname" . }}-webhook
+        namespace: {{ .Release.Namespace }}
+        path: /validate-clusterresources-instaclustr-com-v1beta1-clusterbackup
+    failurePolicy: Fail
+    name: vclusterbackup.kb.io
+    rules:
+      - apiGroups:
+          - clusterresources.instaclustr.com
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - clusterbackups
     sideEffects: None
   - admissionReviewVersions:
       - v1
@@ -627,6 +667,26 @@ webhooks:
       service:
         name: {{ template "operator.fullname" . }}-webhook
         namespace: {{ .Release.Namespace }}
+        path: /validate-clusterresources-instaclustr-com-v1beta1-opensearchegressrules
+    failurePolicy: Fail
+    name: vopensearchegressrules.kb.io
+    rules:
+      - apiGroups:
+          - clusterresources.instaclustr.com
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - opensearchegressrules
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ template "operator.fullname" . }}-webhook
+        namespace: {{ .Release.Namespace }}
         path: /validate-clusterresources-instaclustr-com-v1beta1-opensearchuser
     failurePolicy: Fail
     name: vopensearchuser.kb.io
@@ -640,6 +700,26 @@ webhooks:
           - UPDATE
         resources:
           - opensearchusers
+    sideEffects: None
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ template "operator.fullname" . }}-webhook
+        namespace: {{ .Release.Namespace }}
+        path: /validate-clusterresources-instaclustr-com-v1beta1-postgresqluser
+    failurePolicy: Fail
+    name: vpostgresqluser.kb.io
+    rules:
+      - apiGroups:
+          - clusterresources.instaclustr.com
+        apiVersions:
+          - v1beta1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - postgresqlusers
     sideEffects: None
   - admissionReviewVersions:
       - v1
