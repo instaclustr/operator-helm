@@ -19,14 +19,14 @@ spec:
     - jsonPath: .metadata.creationTimestamp
       name: Age
       type: date
+    - jsonPath: .spec.version
+      name: Version
+      type: string
     - jsonPath: .status.id
       name: ID
       type: string
     - jsonPath: .status.state
       name: State
-      type: string
-    - jsonPath: .spec.version
-      name: Version
       type: string
     name: v1beta1
     schema:
@@ -106,7 +106,7 @@ spec:
                 description: The PCI compliance standards relate to the security of
                   user data and transactional information. Can only be applied clusters
                   provisioned on AWS_VPC, running Cassandra, Kafka, Elasticsearch
-                  and Redis. PCI compliance cannot be enabled if the cluster has Spark.
+                  and Redis.
                 type: boolean
               privateNetworkCluster:
                 type: boolean
@@ -147,6 +147,8 @@ spec:
                     encryptionKeyId:
                       type: string
                     id:
+                      type: string
+                    name:
                       type: string
                     nodeNumber:
                       type: integer

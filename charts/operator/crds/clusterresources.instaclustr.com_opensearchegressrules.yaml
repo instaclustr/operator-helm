@@ -15,7 +15,14 @@ spec:
     singular: opensearchegressrules
   scope: Namespaced
   versions:
-  - name: v1beta1
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.id
+      name: ID
+      type: string
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: OpenSearchEgressRules is the Schema for the opensearchegressrules
@@ -37,6 +44,17 @@ spec:
             properties:
               clusterId:
                 type: string
+              clusterRef:
+                properties:
+                  cdcName:
+                    type: string
+                  clusterKind:
+                    type: string
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                type: object
               openSearchBindingId:
                 type: string
               source:
@@ -44,12 +62,13 @@ spec:
               type:
                 type: string
             required:
-            - clusterId
             - openSearchBindingId
             - source
             type: object
           status:
             properties:
+              clusterId:
+                type: string
               id:
                 type: string
             type: object

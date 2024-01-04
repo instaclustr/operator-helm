@@ -15,7 +15,17 @@ spec:
     singular: azurevnetpeering
   scope: Namespaced
   versions:
-  - name: v1beta1
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.id
+      name: ID
+      type: string
+    - jsonPath: .status.statusCode
+      name: StatusCode
+      type: string
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: AzureVNetPeering is the Schema for the azurevnetpeerings API
@@ -37,6 +47,17 @@ spec:
             properties:
               cdcId:
                 type: string
+              clusterRef:
+                properties:
+                  cdcName:
+                    type: string
+                  clusterKind:
+                    type: string
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                type: object
               peerAdObjectId:
                 type: string
               peerResourceGroup:
@@ -50,7 +71,6 @@ spec:
               peerVirtualNetworkName:
                 type: string
             required:
-            - cdcId
             - peerResourceGroup
             - peerSubnets
             - peerSubscriptionId
@@ -59,6 +79,8 @@ spec:
           status:
             description: AzureVNetPeeringStatus defines the observed state of AzureVNetPeering
             properties:
+              cdcId:
+                type: string
               failureReason:
                 type: string
               id:

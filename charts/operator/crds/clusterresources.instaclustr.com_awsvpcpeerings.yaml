@@ -15,7 +15,17 @@ spec:
     singular: awsvpcpeering
   scope: Namespaced
   versions:
-  - name: v1beta1
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.id
+      name: ID
+      type: string
+    - jsonPath: .status.statusCode
+      name: StatusCode
+      type: string
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: AWSVPCPeering is the Schema for the awsvpcpeerings API
@@ -37,6 +47,17 @@ spec:
             properties:
               cdcId:
                 type: string
+              clusterRef:
+                properties:
+                  cdcName:
+                    type: string
+                  clusterKind:
+                    type: string
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                type: object
               peerAwsAccountId:
                 type: string
               peerRegion:
@@ -48,7 +69,6 @@ spec:
               peerVpcId:
                 type: string
             required:
-            - cdcId
             - peerAwsAccountId
             - peerSubnets
             - peerVpcId
@@ -56,6 +76,8 @@ spec:
           status:
             description: AWSVPCPeeringStatus defines the observed state of AWSVPCPeering
             properties:
+              cdcId:
+                type: string
               failureReason:
                 type: string
               id:

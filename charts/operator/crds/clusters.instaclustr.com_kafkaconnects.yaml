@@ -19,14 +19,14 @@ spec:
     - jsonPath: .metadata.creationTimestamp
       name: Age
       type: date
+    - jsonPath: .spec.version
+      name: Version
+      type: string
     - jsonPath: .status.id
       name: ID
       type: string
     - jsonPath: .status.state
       name: State
-      type: string
-    - jsonPath: .spec.version
-      name: Version
       type: string
     name: v1beta1
     schema:
@@ -179,11 +179,51 @@ spec:
               name:
                 description: Name [ 3 .. 32 ] characters.
                 type: string
+              onPremisesSpec:
+                properties:
+                  cloudInitScriptRef:
+                    description: ObjectReference is namespaced reference to an object
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    required:
+                    - name
+                    - namespace
+                    type: object
+                  dataDiskSize:
+                    type: string
+                  nodeCPU:
+                    format: int64
+                    type: integer
+                  nodeMemory:
+                    type: string
+                  osDiskSize:
+                    type: string
+                  osImageURL:
+                    type: string
+                  sshGatewayCPU:
+                    format: int64
+                    type: integer
+                  sshGatewayMemory:
+                    type: string
+                  storageClassName:
+                    type: string
+                required:
+                - cloudInitScriptRef
+                - dataDiskSize
+                - nodeCPU
+                - nodeMemory
+                - osDiskSize
+                - osImageURL
+                - storageClassName
+                type: object
               pciCompliance:
                 description: The PCI compliance standards relate to the security of
                   user data and transactional information. Can only be applied clusters
                   provisioned on AWS_VPC, running Cassandra, Kafka, Elasticsearch
-                  and Redis. PCI compliance cannot be enabled if the cluster has Spark.
+                  and Redis.
                 type: boolean
               privateNetworkCluster:
                 type: boolean
@@ -225,6 +265,17 @@ spec:
                         Cannot be provided if targeting an external cluster.
                       items:
                         properties:
+                          clusterRef:
+                            properties:
+                              cdcName:
+                                type: string
+                              clusterKind:
+                                type: string
+                              name:
+                                type: string
+                              namespace:
+                                type: string
+                            type: object
                           kafkaConnectVpcType:
                             description: Available options are KAFKA_VPC, VPC_PEERED,
                               SEPARATE_VPC
@@ -233,7 +284,6 @@ spec:
                             type: string
                         required:
                         - kafkaConnectVpcType
-                        - targetKafkaClusterId
                         type: object
                       type: array
                   type: object
@@ -270,6 +320,8 @@ spec:
                     encryptionKeyId:
                       type: string
                     id:
+                      type: string
+                    name:
                       type: string
                     nodeNumber:
                       type: integer
@@ -463,6 +515,8 @@ spec:
                     type: string
                 type: object
               state:
+                type: string
+              targetKafkaClusterId:
                 type: string
               twoFactorDeleteEnabled:
                 type: boolean
