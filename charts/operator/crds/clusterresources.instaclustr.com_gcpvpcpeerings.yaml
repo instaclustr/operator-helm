@@ -15,7 +15,17 @@ spec:
     singular: gcpvpcpeering
   scope: Namespaced
   versions:
-  - name: v1beta1
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.id
+      name: ID
+      type: string
+    - jsonPath: .status.statusCode
+      name: StatusCode
+      type: string
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: GCPVPCPeering is the Schema for the gcpvpcpeerings API
@@ -37,6 +47,17 @@ spec:
             properties:
               cdcId:
                 type: string
+              clusterRef:
+                properties:
+                  cdcName:
+                    type: string
+                  clusterKind:
+                    type: string
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                type: object
               peerProjectId:
                 type: string
               peerSubnets:
@@ -46,7 +67,6 @@ spec:
               peerVpcNetworkName:
                 type: string
             required:
-            - cdcId
             - peerProjectId
             - peerSubnets
             - peerVpcNetworkName
@@ -54,6 +74,8 @@ spec:
           status:
             description: GCPVPCPeeringStatus defines the observed state of GCPVPCPeering
             properties:
+              cdcId:
+                type: string
               failureReason:
                 type: string
               id:

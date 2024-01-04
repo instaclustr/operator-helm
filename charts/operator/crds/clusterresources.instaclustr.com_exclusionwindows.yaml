@@ -15,7 +15,14 @@ spec:
     singular: exclusionwindow
   scope: Namespaced
   versions:
-  - name: v1beta1
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.id
+      name: ID
+      type: string
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: ExclusionWindow is the Schema for the exclusionwindows API
@@ -37,6 +44,17 @@ spec:
             properties:
               clusterId:
                 type: string
+              clusterRef:
+                properties:
+                  cdcName:
+                    type: string
+                  clusterKind:
+                    type: string
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                type: object
               dayOfWeek:
                 type: string
               durationInHours:
@@ -49,7 +67,6 @@ spec:
                 minimum: 0
                 type: integer
             required:
-            - clusterId
             - dayOfWeek
             - durationInHours
             - startHour
@@ -57,6 +74,8 @@ spec:
           status:
             description: ExclusionWindowStatus defines the observed state of ExclusionWindow
             properties:
+              clusterId:
+                type: string
               id:
                 type: string
             required:

@@ -15,7 +15,17 @@ spec:
     singular: awssecuritygroupfirewallrule
   scope: Namespaced
   versions:
-  - name: v1beta1
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - jsonPath: .status.id
+      name: ID
+      type: string
+    - jsonPath: .status.status
+      name: Status
+      type: string
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: AWSSecurityGroupFirewallRule is the Schema for the awssecuritygroupfirewallrules
@@ -39,12 +49,22 @@ spec:
             properties:
               clusterId:
                 type: string
+              clusterRef:
+                properties:
+                  cdcName:
+                    type: string
+                  clusterKind:
+                    type: string
+                  name:
+                    type: string
+                  namespace:
+                    type: string
+                type: object
               securityGroupId:
                 type: string
               type:
                 type: string
             required:
-            - clusterId
             - securityGroupId
             - type
             type: object
@@ -52,6 +72,8 @@ spec:
             description: AWSSecurityGroupFirewallRuleStatus defines the observed state
               of AWSSecurityGroupFirewallRule
             properties:
+              clusterId:
+                type: string
               deferredReason:
                 type: string
               id:
