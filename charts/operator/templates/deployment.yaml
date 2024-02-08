@@ -68,15 +68,13 @@ spec:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .command }}
+          {{- if .Values.deployment.command }}
           command:
-          {{- range .command }}
-          - {{ . }}
+            - {{ .Values.deployment.command }}
           {{- end }}
-          {{- end }}
-          {{- if .args }}
+          {{- if .Values.deployment.args }}
           args:
-          {{- range .args }}
+          {{- range .Values.deployment.args }}
           - {{ . }}
           {{- end }}
           {{- end }}
@@ -118,7 +116,7 @@ spec:
           {{- end }}
           {{- if .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.deployment.resources | nindent 12 }}
           {{- end }}
           volumeMounts:
             - mountPath: /tmp/k8s-webhook-server/serving-certs
